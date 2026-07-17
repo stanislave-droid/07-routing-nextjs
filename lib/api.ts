@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { Note } from "../types/note";
+import { Category } from "./categories";
 
 const axiosClient = axios.create({
   baseURL: "https://notehub-public.goit.study/api",
@@ -17,9 +18,9 @@ export async function fetchNotes(
   page: number,
   query: string,
   perPage: number,
-  tag?: string,
+  tag?: Category | undefined,
 ): Promise<fetchNotesResponse> {
-  const { data } = await axiosClient<fetchNotesResponse>("/notes", {
+  const { data } = await axiosClient.get<fetchNotesResponse>("/notes", {
     params: {
       page,
       search: query,
@@ -48,6 +49,6 @@ export async function deleteNote(id: string): Promise<Note> {
 }
 
 export async function fetchNoteById(id: string): Promise<Note> {
-  const { data } = await axiosClient<Note>(`/notes/${id}`);
+  const { data } = await axiosClient.get<Note>(`/notes/${id}`);
   return data;
 }
